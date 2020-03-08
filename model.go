@@ -9,7 +9,7 @@ import (
 const (
 	TableObjectRoles = `CREATE TABLE IF NOT EXISTS %v (
 		id int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增长ID',
-		object varchar(45) NOT NULL COMMENT '对象',
+		name varchar(45) NOT NULL COMMENT '对象名',
 		is_group tinyint(4) unsigned NOT NULL COMMENT '是否组对象',
 		uid varchar(128) NOT NULL COMMENT '用户ID',
 		level int(10) unsigned NOT NULL COMMENT '角色级别',
@@ -37,7 +37,7 @@ const (
 // ModelObjectRole 对象角色
 type ModelObjectRole struct {
 	ID       int          `json:"id,omitempty"`
-	Object   string       `json:"object,omitempty"`
+	Name     string       `json:"name,omitempty"` // object name Or group name
 	IsGroup  bool         `json:"is_group,omitempty"`
 	UID      string       `json:"uid,omitempty"`
 	Level    int          `json:"level,omitempty"`

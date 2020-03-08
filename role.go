@@ -1,6 +1,8 @@
 package gorbac
 
-import "time"
+import (
+	"time"
+)
 
 // Role 角色
 type Role struct {
@@ -8,6 +10,14 @@ type Role struct {
 	Level    RoleLevel `json:"level,omitempty"`
 	ExpireAt int64     `json:"expire_at,omitempty"`
 	Actions  []string  `json:"actions,omitempty"` // 允许的所有动作
+}
+
+func (role *Role) fillActions(actionLevels ActionLevels) {
+	for action, minLevel := range actionLevels {
+		if minLevel <= role.Level {
+			role.Actions = append(role.Actions, action)
+		}
+	}
 }
 
 // ObjectRole ...
@@ -69,12 +79,16 @@ func (rbac *RBAC) GetGroupObjects(group string) ([]string, error) {
 	return nil, nil
 }
 
-// GetUserObjectRoles 获得用户所有object的role 参数可为 nil 表示全部
-func (rbac *RBAC) GetUserObjectRoles(uid string, group *string, isExtend *bool) ([]ObjectRole, error) {
-	return nil, nil
+// GetUserObjectRoles 获得用户所有object的role: objectOrBlank 非空指定对象, 为空不指定对象, isExcludeExtend 是否排除继承的角色
+func (rbac *RBAC) GetUserObjectRoles(uid string, objectOrBlank string, isExcludeExtend bool) ([]ObjectRole, error) {
+	if isExcludeExtend {
+		return rbac.dbObjectRolesExcludeExtend(uid, objectOrBlank)
+	}
+
+	return rbac.dbObjectRolesIncludeExtend(uid, objectOrBlank)
 }
 
-// GetUserGroupRoles 获得用户的所有group的role
-func (rbac *RBAC) GetUserGroupRoles(uid string) ([]GroupRole, error) {
+// GetUserGroupRoles 获得用户的所有group的role 参数可为 nil 表示全部
+func (rbac *RBAC) GetUserGroupRoles(uid string, group *string) ([]GroupRole, error) {
 	return nil, nil
 }
