@@ -51,5 +51,5 @@ type ModelGroupObject struct {
 	ID      int       `json:"id,omitempty"`
 	Group   string    `json:"group,omitempty"`
 	Object  string    `json:"object,omitempty"`
-	Updated time.Time `json:"updated,omitempty"`
+	Created time.Time `json:"created,omitempty"`
 }

@@ -28,7 +28,7 @@ func objectRoleAppend(roles []ObjectRole, appendRoles ...ObjectRole) []ObjectRol
 }
 
 // 获取不含继承的角色列表
-func (rbac *RBAC) dbObjectRolesExcludeExtend(uid string, objectOrBlank string) ([]ObjectRole, error) {
+func (rbac *RBAC) dbGetObjectRolesExcludeExtend(uid string, objectOrBlank string) ([]ObjectRole, error) {
 	now := time.Now()
 	result := []ObjectRole{}
 
@@ -36,7 +36,7 @@ func (rbac *RBAC) dbObjectRolesExcludeExtend(uid string, objectOrBlank string) (
 		rbac.tableObjectRoles.Name)
 	args := []interface{}{uid, now}
 	if objectOrBlank != "" {
-		query += " AND object = ?"
+		query += " AND name = ?"
 		args = append(args, objectOrBlank)
 	}
 
@@ -74,7 +74,7 @@ func (rbac *RBAC) dbObjectRolesExcludeExtend(uid string, objectOrBlank string) (
 }
 
 // 获取包含继承的角色列表
-func (rbac *RBAC) dbObjectRolesIncludeExtend(uid string, objectOrBlank string) ([]ObjectRole, error) {
+func (rbac *RBAC) dbGetObjectRolesIncludeExtend(uid string, objectOrBlank string) ([]ObjectRole, error) {
 	now := time.Now()
 	result := []ObjectRole{}
 
